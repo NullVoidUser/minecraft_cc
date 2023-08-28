@@ -1,3 +1,5 @@
+local params = {...}
+local str = "test/music" .. params[1] .. ".dfpwm"
 for chunk in io.lines("test/music4.dfpwm", 16 * 1024) do
     local buffer = decoder(chunk)
 
