@@ -148,8 +148,7 @@ while y > -60  do
     end
     
     --full inventory
-    local empty = turtle.get_empty_slots()
-    if(empty < 4) then
+    if(get_empty_slots() < 4) then
         return_to_y_origin(y_start, y)
         y = y_start
         dump_inventory()
