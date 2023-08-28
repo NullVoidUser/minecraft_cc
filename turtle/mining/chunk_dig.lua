@@ -5,12 +5,12 @@ local function return_to_xz_origin(chest_dir, x, z)
     else
         turtle.turnRight()
     end
-    for i = z, 0, -1 do
+    for i = z, 1, -1 do
         turtle.forward()
     end
 
     turtle.turnRight()
-    for i = x, 0, -1 do
+    for i = x, 1, -1 do
         turtle.forward()
     end
     
@@ -22,7 +22,7 @@ end
 --return to height under chest
 local function return_to_y_origin(y_start, y)
     local diff = math.abs(y_start + math.abs(y))
-    for i = diff, 0, -1 do
+    for i = diff, 1, -1 do
         turtle.up()
     end
 end
@@ -48,7 +48,8 @@ local function get_empty_slots()
     local num = 0
     for i = 1, 16, 1 do
         turtle.select(i)
-        if turtle.getItemCount() ~= 0 then
+        local count = turtle.getItemCount()
+        if (count ~= nil) and (count ~= 0) then
             num = num + 1
         end
     end
@@ -59,7 +60,7 @@ end
 --returns to last position
 local function return_to_pos(y_start, y_target)
     local diff = math.abs(y_start + math.abs(y))
-    for i = diff, 0, -1 do
+    for i = diff, 1, -1 do
         turtle.down()
     end
     return y_target
