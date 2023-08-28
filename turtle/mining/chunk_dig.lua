@@ -86,7 +86,7 @@ local dir = 1
 
 while y > -60  do
     -- dig layer
-    while area_z < z_size do
+    while area_z <= z_size do
         while area_x < x_size do
             turtle.dig("right")
             turtle.forward()
