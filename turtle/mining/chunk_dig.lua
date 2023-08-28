@@ -69,8 +69,8 @@ end
 
 local params = {...}
 local y_start = tonumber(params[1])
-local x_size = tonumber(params[2])
-local z_size = tonumber(params[3])
+local x_size = tonumber(params[2]) -1
+local z_size = tonumber(params[3]) -1
 
 --chest pos is on 0 1 0
 local x = 0
@@ -116,6 +116,17 @@ while y > -60  do
         area_x = 0
     end
 
+    if(area_z == z_size) then
+        if (dir == 1) then
+            turtle.turnRight()
+            dir = -1
+        else
+            turtle.turnRight()
+            dir = 1
+        end
+        turtle.forward()
+        turtle.turnRight()
+    end
     area_z = 0
 
     -- prepare for new layer
@@ -142,10 +153,10 @@ while y > -60  do
         return_to_y_origin(y_start, y)
         y = y_start
         dump_inventory()
-        if(turtle.get_empty_slots() ~= 16) then
+        if(get_empty_slots() ~= 16) then
             print("Please empty chest")
         end
-        while turtle.get_empty_slots() ~= 16 do
+        while get_empty_slots() ~= 16 do
             dump_inventory()
             sleep(10)
         end
