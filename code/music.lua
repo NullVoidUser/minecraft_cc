@@ -1,11 +1,11 @@
 local params = {...}
-local str = "test/music" .. params[1] .. ".dfpwm"
+local path = "music/" .. params[1] .. ".dfpwm"
 
 local dfpwm = require("cc.audio.dfpwm")
 local speaker = peripheral.find("speaker")
 local decoder = dfpwm.make_decoder()
 
-for chunk in io.lines("test/music4.dfpwm", 16 * 1024) do
+for chunk in io.lines(path, 16 * 1024) do
     local buffer = decoder(chunk)
 
     while not speaker.playAudio(buffer) do
