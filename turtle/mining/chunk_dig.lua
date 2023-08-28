@@ -67,9 +67,9 @@ end
 
 
 local params = {...}
-local y_start = params[1]
-local x_size = params[2]
-local z_size = params[3]
+local y_start = tonumber(params[1])
+local x_size = tonumber(params[2])
+local z_size = tonumber(params[3])
 
 --chest pos is on 0 1 0
 local x = 0
