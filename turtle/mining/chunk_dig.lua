@@ -1,9 +1,9 @@
 --retrun to position under chest
 local function return_to_xz_origin(chest_dir, x, z)
     if(chest_dir == 1) then
-        turtle.turnLeft()
-    else
         turtle.turnRight()
+    else
+        turtle.turnLeft()
     end
     for i = z, 1, -1 do
         turtle.forward()
