@@ -160,8 +160,9 @@ while y > -60  do
             sleep(10)
         end
     end
-
-    y = return_to_pos(y_start, y_prev)
+    if(y ~= y_prev) then
+        y = return_to_pos(y_start, y_prev)
+    end
     if y > -60 then
         turtle.digDown()
         turtle.down()
