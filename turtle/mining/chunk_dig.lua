@@ -171,3 +171,5 @@ while y > -60  do
 
 end
 
+return_to_y_origin(y_start, y)
+
