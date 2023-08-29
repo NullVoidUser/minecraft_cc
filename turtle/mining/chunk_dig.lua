@@ -59,7 +59,7 @@ end
 
 --returns to last position
 local function return_to_pos(y_start, y_target)
-    local diff = math.abs(y_start + math.abs(y))
+    local diff = math.abs(y_start + math.abs(y_target))
     for i = diff, 1, -1 do
         turtle.down()
     end
