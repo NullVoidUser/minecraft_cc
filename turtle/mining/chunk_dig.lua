@@ -14,7 +14,6 @@ local function return_to_xz_origin(chest_dir, x, z)
         turtle.forward()
     end
     
-
     turtle.turnLeft()
     turtle.turnLeft()
 end
@@ -44,16 +43,34 @@ local function return_to_pos(y, y_target)
     return y_target
 end
 
+--refuels all slots
+local function refuel_all()
+    for i = 1, 16, 1 do
+        turtle.select(i)
+        turtle.refuel()
+    end
+    turtle.select(1)
+end
+
+--searches for a block
+local function search_block(block_name)
+    print("searching for " .. block_name)
+    local exists, block = turtle.inspect()
+    local count = 0
+    while exists == false and string.find(block.name, block_name) == false do
+        turtle.turnRight()
+        exists, block = turtle.inspect()
+        count = count + 1
+        if count >= 3 then
+            sleep(5)
+            count = 0
+        end
+    end
+    print(block_name .. " found")
+end
 
 --dumps the inventory of the turtle in a chest
 local function dump_inventory()
-    local is_block = turtle.inspect()
-    if(is_block == false) then
-        print("Please place a chest infront of the turtle")
-        while turtle.inspect() == false do
-            sleep(5)
-        end
-    end
     for i = 1, 16, 1 do
         turtle.select(i)
         turtle.drop()
@@ -100,12 +117,14 @@ while y > -60  do
     -- dig layer
     while area_z <= z_size do
         area_x = 0
+        --dig x
         while area_x < x_size do
             turtle.dig("right")
             turtle.forward()
             area_x = area_x + 1
             x = x + dir
         end
+        --dig z
         area_z = area_z + 1
         if area_z <= z_size then
             if dir == 1 then
@@ -141,20 +160,36 @@ while y > -60  do
     if (turtle.getFuelLevel() < (2*diff_calc(y_start, y) + 2*(z_size * x_size))) then
         return_to_y_origin(y_start, y)
         y = y_start
+
+        --might as well dump the inventory
+        search_block("chest")
         dump_inventory()
+
+        --refuel
         print("Refuel needed")
+        print("insert fuel and then press any button")
+            
         while (turtle.getFuelLevel() < (math.abs(y_start + math.abs(y)) + 600)) do
-            turtle.refuel()
-            sleep(5)
+            repeat
+                local event, key, is_held = os.pullEvent("key")
+            until is_held == false and string.find(keys.name(key), "Shift") == false
+            refuel_all()
+            print("Fuel level is " ..turtle.getFuelLevel())
         end
+        
+        --dump exess fuel
+        search_block("barrel")
+        dump_inventory()
+        turtle.turnLeft()
+
     end
     
     --full inventory
     if(get_empty_slots() < 4) then
         return_to_y_origin(y_start, y)
         y = y_start
-        turtle.turnRight()
-        turtle.turnRight()
+
+        search_block("chest")
         dump_inventory()
         if(get_empty_slots() ~= 16) then
             print("Please empty chest")
@@ -163,6 +198,7 @@ while y > -60  do
             dump_inventory()
             sleep(10)
         end
+        
         turtle.turnRight()
         turtle.turnRight()
     end
