@@ -56,7 +56,7 @@ local function dump_inventory()
     end
     for i = 1, 16, 1 do
         turtle.select(i)
-        turtle.dropUp()
+        turtle.drop()
     end
     turtle.select(1)
 end
