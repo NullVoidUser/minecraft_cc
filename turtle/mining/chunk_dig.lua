@@ -84,6 +84,13 @@ local x = 0
 local z = 0
 local y = y_start
 
+--able to start at a lower height
+local start_at_lower = params[4]
+if start_at_lower ~= nil then
+    y = tonumber(params[4])
+    return_to_pos(y_start, y)
+end
+
 --for chanching directions
 local area_x = 0
 local area_z = 0
