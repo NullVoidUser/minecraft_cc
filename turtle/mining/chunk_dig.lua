@@ -171,7 +171,7 @@ while y > -60  do
 end
 
 if y == -60 then
-    y = y -1
+    y = y + 1
 end
 
 return_to_xz_origin(dir, x, z)
