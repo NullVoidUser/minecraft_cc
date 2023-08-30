@@ -1,4 +1,4 @@
---retrun to position under chest
+--retrun to position next to chest
 local function return_to_xz_origin(chest_dir, x, z)
     if(chest_dir == 1) then
         turtle.turnRight()
@@ -19,7 +19,7 @@ local function return_to_xz_origin(chest_dir, x, z)
     turtle.turnLeft()
 end
 
---return to height under chest
+--return to height on chest layer
 local function return_to_y_origin(y_start, y)
     local diff = math.abs(y_start + math.abs(y))
     for i = diff, 1, -1 do
@@ -29,10 +29,10 @@ end
 
 --dumps the inventory of the turtle in a chest
 local function dump_inventory()
-    local is_block = turtle.inspectUp()
+    local is_block = turtle.inspect()
     if(is_block == false) then
-        print("Please place a chest above the turtle")
-        while turtle.inspectUp() == false do
+        print("Please place a chest infront of the turtle")
+        while turtle.inspect() == false do
             sleep(5)
         end
     end
@@ -47,13 +47,11 @@ end
 local function get_empty_slots()
     local num = 0
     for i = 1, 16, 1 do
-        turtle.select(i)
-        local count = turtle.getItemCount()
+        local count = turtle.getItemCount(i)
         if (count ~= nil) and (count ~= 0) then
             num = num + 1
         end
     end
-    turtle.select(1)
     return 16 - num
 end
 
@@ -87,46 +85,37 @@ local dir = 1
 while y > -60  do
     -- dig layer
     while area_z <= z_size do
+        area_x = 0
         while area_x < x_size do
             turtle.dig("right")
             turtle.forward()
             area_x = area_x + 1
             x = x + dir
         end
-
-        if dir == 1 then
-            turtle.turnLeft()
-        else
-            turtle.turnRight()
-        end
-        
-        turtle.dig("right")
-        turtle.forward()
-
-        if(dir == 1) then
-            turtle.turnLeft()
-            dir = -1
-        else
-            turtle.turnRight()
-            dir = 1
-        end
-
         area_z = area_z + 1
-        z = z + 1
-        area_x = 0
+        if area_z <= z_size then
+            if dir == 1 then
+                turtle.turnLeft()
+            else
+                turtle.turnRight()
+            end
+            
+            turtle.dig("right")
+            turtle.forward()
+    
+            if(dir == 1) then
+                turtle.turnLeft()
+                dir = -1
+            else
+                turtle.turnRight()
+                dir = 1
+            end
+            z = z + 1
+        end
+
     end
 
-    if(area_z == z_size) then
-        if (dir == 1) then
-            turtle.turnRight()
-            dir = -1
-        else
-            turtle.turnRight()
-            dir = 1
-        end
-        turtle.forward()
-        turtle.turnRight()
-    end
+    
     area_z = 0
 
     -- prepare for new layer
@@ -135,6 +124,7 @@ while y > -60  do
     z = 0
     dir = 1
     local y_prev = y
+    
     -- low fuel
     if (turtle.getFuelLevel() < (math.abs(y_start + math.abs(y)) + 600)) then
         return_to_y_origin(y_start, y)
@@ -151,6 +141,8 @@ while y > -60  do
     if(get_empty_slots() < 4) then
         return_to_y_origin(y_start, y)
         y = y_start
+        turtle.turnRight()
+        turtle.turnRight()
         dump_inventory()
         if(get_empty_slots() ~= 16) then
             print("Please empty chest")
@@ -159,6 +151,8 @@ while y > -60  do
             dump_inventory()
             sleep(10)
         end
+        turtle.turnRight()
+        turtle.turnRight()
     end
     if(y ~= y_prev) then
         y = return_to_pos(y_start, y_prev)
@@ -171,5 +165,5 @@ while y > -60  do
 
 end
 
+return_to_xz_origin(dir, x, z)
 return_to_y_origin(y_start, y)
-
