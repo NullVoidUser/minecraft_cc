@@ -19,13 +19,31 @@ local function return_to_xz_origin(chest_dir, x, z)
     turtle.turnLeft()
 end
 
+
+--get block difference
+local function diff_calc(y_target, y)
+    local y_target_offset = y_target + math.abs(y)
+    local y_offset = y + math.abs(y)
+    return y_target_offset - y_offset
+end
+
 --return to height on chest layer
-local function return_to_y_origin(y_start, y)
-    local diff = math.abs(y_start + math.abs(y))
+local function return_to_y_origin(y_target, y)
+    local diff = diff_calc(y_target, y)
     for i = diff, 1, -1 do
         turtle.up()
     end
 end
+
+--returns to last position
+local function return_to_pos(y, y_target)
+    local diff = diff_calc(y, y_target)
+    for i = diff, 1, -1 do
+        turtle.down()
+    end
+    return y_target
+end
+
 
 --dumps the inventory of the turtle in a chest
 local function dump_inventory()
@@ -55,15 +73,6 @@ local function get_empty_slots()
     return 16 - num
 end
 
---returns to last position
-local function return_to_pos(y_start, y_target)
-    local diff = math.abs(y_start + math.abs(y_target))
-    for i = diff, 1, -1 do
-        turtle.down()
-    end
-    return y_target
-end
-
 
 local params = {...}
 local y_start = tonumber(params[1])
@@ -79,8 +88,6 @@ local y = y_start
 local area_x = 0
 local area_z = 0
 local dir = 1
-
--- fuel level to garantee a trip to origin
 
 while y > -60  do
     -- dig layer
@@ -115,9 +122,7 @@ while y > -60  do
 
     end
 
-    
     area_z = 0
-
     -- prepare for new layer
     return_to_xz_origin(dir, x, z)
     x = 0
@@ -126,7 +131,7 @@ while y > -60  do
     local y_prev = y
 
     -- low fuel
-    if (turtle.getFuelLevel() < (math.abs(y_start + math.abs(y)) + 600)) then
+    if (turtle.getFuelLevel() < (2*diff_calc(y_start, y) + 2*(z_size * x_size))) then
         return_to_y_origin(y_start, y)
         y = y_start
         dump_inventory()
