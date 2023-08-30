@@ -124,7 +124,7 @@ while y > -60  do
     z = 0
     dir = 1
     local y_prev = y
-    
+
     -- low fuel
     if (turtle.getFuelLevel() < (math.abs(y_start + math.abs(y)) + 600)) then
         return_to_y_origin(y_start, y)
@@ -163,6 +163,10 @@ while y > -60  do
         turtle.down()
     end
 
+end
+
+if y == -60 then
+    y = y -1
 end
 
 return_to_xz_origin(dir, x, z)
