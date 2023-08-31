@@ -78,6 +78,22 @@ local function dump_inventory()
     turtle.select(1)
 end
 
+--unloads the inventory contents in achest
+local function unload()
+    search_block("chest")
+        dump_inventory()
+        if(get_empty_slots() ~= 16) then
+            print("Please empty chest")
+        end
+        while get_empty_slots() ~= 16 do
+            dump_inventory()
+            sleep(10)
+        end
+        
+        turtle.turnRight()
+        turtle.turnRight()
+end
+
 --gets the remaining empty inventory slots
 local function get_empty_slots()
     local num = 0
@@ -161,6 +177,9 @@ while y > -60  do
         return_to_y_origin(y_start, y)
         y = y_start
 
+        --might as well unload
+        unload()
+
         --refuel
         print("Refuel needed")
         print("insert fuel and then press any button")
@@ -182,18 +201,7 @@ while y > -60  do
         return_to_y_origin(y_start, y)
         y = y_start
 
-        search_block("chest")
-        dump_inventory()
-        if(get_empty_slots() ~= 16) then
-            print("Please empty chest")
-        end
-        while get_empty_slots() ~= 16 do
-            dump_inventory()
-            sleep(10)
-        end
-        
-        turtle.turnRight()
-        turtle.turnRight()
+        unload()
     end
     if(y ~= y_prev) then
         y = return_to_pos(y_start, y_prev)
