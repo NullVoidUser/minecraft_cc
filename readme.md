@@ -1,1 +1,1 @@
-Files and Programs for Computercraft
+Files and Programs for personal computercraft projects
