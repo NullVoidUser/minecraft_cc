@@ -57,7 +57,7 @@ local function search_block(block_name)
     print("searching for " .. block_name)
     local exists, block = turtle.inspect()
     local count = 0
-    while exists == false and string.find(block.name, block_name) == false do
+    while exists == false or (exists == true and string.find(block.name, block_name) == false) do
         turtle.turnRight()
         exists, block = turtle.inspect()
         count = count + 1
