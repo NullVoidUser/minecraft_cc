@@ -57,7 +57,7 @@ local function search_block(block_name)
     print("searching for " .. block_name)
     local exists, block = turtle.inspect()
     local count = 0
-    while exists == false or (exists == true and string.find(block.name, block_name) == false) do
+    while exists == false or (exists == true and string.find(block.name, block_name) == nil) do
         turtle.turnRight()
         exists, block = turtle.inspect()
         count = count + 1
@@ -161,10 +161,6 @@ while y > -60  do
         return_to_y_origin(y_start, y)
         y = y_start
 
-        --might as well dump the inventory
-        search_block("chest")
-        dump_inventory()
-
         --refuel
         print("Refuel needed")
         print("insert fuel and then press any button")
@@ -176,10 +172,7 @@ while y > -60  do
             refuel_all()
             print("Fuel level is " ..turtle.getFuelLevel())
         end
-        
-        --dump exess fuel
-        search_block("barrel")
-        dump_inventory()
+
         turtle.turnLeft()
 
     end
