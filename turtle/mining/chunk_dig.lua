@@ -220,3 +220,4 @@ end
 
 return_to_xz_origin(dir, x, z)
 return_to_y_origin(y_start, y)
+print("finished")
